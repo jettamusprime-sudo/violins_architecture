@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIOLINS Architecture | Master Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc; 
+        }
+        .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 400px; 
+        } 
+        @media (min-width: 768px) { .chart-container { height: 350px; max-width: 800px; } }
+        
+        .acronym-letter { font-weight: 800; font-size: 1.5rem; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active-med { background-color: #f43f5e; color: white; border-color: #f43f5e; }
+        .tab-btn.active-npc { background-color: #8b5cf6; color: white; border-color: #8b5cf6; }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+        
+        /* Stop scrolling when modal is active */
+        .no-scroll { overflow: hidden; }
+    </style>
+</head>
+<body class="antialiased min-h-screen pb-20 selection:bg-violet-500 selection:text-white no-scroll">
+
+    <audio id="symphony-audio" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="entry-modal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950 transition-opacity duration-700">
+        <div class="text-center max-w-lg px-6">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 mb-4 tracking-tighter">VIOLINS</h1>
+            <p class="text-slate-400 mb-10 tracking-[0.3em] uppercase text-xs font-mono-custom">Architecture System Ready</p>
+            
+            <button id="enter-btn" class="group relative px-8 py-4 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-full shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all transform hover:scale-105 flex items-center gap-3 mx-auto focus:outline-none">
+                <span class="text-xl">&#9654;</span> 
+                <span>Initialize Symphony</span>
+                <div class="absolute inset-0 rounded-full border-2 border-violet-400 opacity-0 group-hover:animate-ping"></div>
+            </button>
+            <p class="text-slate-600 mt-6 text-xs italic">Audio enabled experience.</p>
+        </div>
+    </div>
+
+    <button id="audio-toggle" class="fixed bottom-6 right-6 z-50 bg-slate-800/80 backdrop-blur-sm border border-slate-600 text-slate-300 w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-slate-700 transition-colors focus:outline-none hidden text-xl">
+        &#128266;
+    </button>
+
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="font-extrabold tracking-widest text-xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400">
+                VIOLINS ARCHITECTURE
+            </div>
+            <div class="flex flex-wrap justify-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <a href="#hero" class="hover:text-cyan-400 transition-colors">Symphony</a>
+                <a href="#engine" class="hover:text-cyan-400 transition-colors">Instruments</a>
+                <a href="#dual-use" class="hover:text-cyan-400 transition-colors">Performances</a>
+                <a href="#roadmap" class="hover:text-cyan-400 transition-colors">Roadmap</a>
+                <a href="#sow" class="hover:text-indigo-400 transition-colors">Bootstrapping SOW</a>
+                <a href="#ip-strategy" class="hover:text-amber-400 transition-colors">IP Memo</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="hero" class="pt-20 pb-16 px-6 border-b border-slate-800 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-slate-900 -z-10"></div>
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-3xl md:text-5xl lg:text-7xl font-extrabold tracking-tighter mb-4 break-words leading-tight">
+                <span class="text-cyan-400">Vinci</span><span class="text-violet-400">Interfacing</span><span class="text-emerald-400">Optimus</span><span class="text-amber-400">Leo</span><span class="text-slate-100">Iron</span><span class="text-indigo-400">National</span><span class="text-rose-500">Star</span>
+            </h1>
+            <p class="text-slate-300 max-w-4xl mx-auto text-lg md:text-2xl font-light mb-16 leading-relaxed">
+                A multi-faceted orchestration of hardware and software. Like a master conductor, VIOLINS eliminates latency and synchronizes complex neural, sensory, and robotic effectors into a perfect technological symphony.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-cyan-400">
+                    <h3 class="font-mono-custom text-cyan-400 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">Vinci</span> <span class="text-sm opacity-50">V</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>V</strong>ector-Stream Protocol</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">The foundational rhythm. Replaces standard HTTP with a zero-copy API layer, ensuring signals move between nodes with zero dropped beats.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-violet-400">
+                    <h3 class="font-mono-custom text-violet-400 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">Interfacing</span> <span class="text-sm opacity-50">I</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>I</strong>ntegrated Master/Slave</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">The strings of the orchestra. Seamlessly bridging the high-level logic with low-level deterministic motor control.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-emerald-400">
+                    <h3 class="font-mono-custom text-emerald-400 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">Optimus</span> <span class="text-sm opacity-50">O</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>O</strong>ptimized Telemetry</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">The predictive intelligence routing system. Anticipates movements and corrects hysteresis (lag) before it occurs in the physical manipulators.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-amber-400">
+                    <h3 class="font-mono-custom text-amber-400 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">Leo</span> <span class="text-sm opacity-50">L</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>L</strong>ow-latency Edge Ops</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">Executing complex algorithms locally without the cloud. Ensures the system never waits for an internet connection to perform a critical halt.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-slate-100">
+                    <h3 class="font-mono-custom text-slate-100 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">Iron</span> <span class="text-sm opacity-50">I</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>I</strong>ntelligent Robotic Nodes</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">The brass section. The physical effector arms, stepper motors, and kinematic structures that exert precise force on the physical world.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-indigo-400">
+                    <h3 class="font-mono-custom text-indigo-400 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">National</span> <span class="text-sm opacity-50">N</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>N</strong>etworked Infrastructure</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">The broadcast auditorium. Secure, mass-scale data synchronization allowing cross-country tele-surgery or the hosting of millions of NPCs simultaneously.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-rose-500 lg:col-span-2">
+                    <h3 class="font-mono-custom text-rose-500 mb-3 border-b border-slate-700 pb-2 flex justify-between items-center">
+                        <span class="acronym-letter">Star</span> <span class="text-sm opacity-50">S</span>
+                    </h3>
+                    <p class="text-sm text-slate-300 mb-2"><strong>S</strong>urgical <strong>T</strong>hermal <strong>A</strong>ccelerated <strong>R</strong>esponse</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">The overarching physical constraint. Utilizing Sparsity Engine logic to keep the hardware running efficiently and cool enough for intracranial and live-tissue environments, preventing dangerous thermal spikes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="engine" class="py-20 px-6 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">The Instruments & The Conductor</h2>
+            <p class="text-slate-400 text-center max-w-2xl mx-auto mb-16">The VIOLINS architecture requires two distinct but perfectly synchronized engines: the physical thermal capabilities of the hardware, and the cognitive orchestration of the API.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="text-3xl text-rose-500">&#9889;</div>
+                        <h3 class="text-2xl font-bold">The Instruments (Hardware)</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">Whether utilizing a temporary Raspberry Pi/Arduino proxy rig or a fully-taped Enterprise ASIC, the physical layer utilizes <strong>Sparsity Logic</strong>. By ignoring zero-value data streams, the hardware eliminates unnecessary thermal generation and processing delays.</p>
+                    
+                    <div class="glass-panel p-6 rounded-xl">
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="energyChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-slate-500 mt-4">Demonstrating 70% thermal and power retention via Sparsity logic.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="text-3xl text-violet-400">&#119070;</div>
+                        <h3 class="text-2xl font-bold">The Conductor (DOPAMINE API)</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">The software suite delegates cognitive load across four distinct sub-routines. Like sections of an orchestra, MEOW, JOSIAH, POEM, and SLIP perform independent tasks while remaining bound to the master UDP Vector-Stream tempo.</p>
+                    
+                    <div class="glass-panel p-6 rounded-xl">
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="apiPolarChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-slate-500 mt-4">Load distribution across the four primary orchestration nodes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-slate-800/50 p-8 rounded-3xl border-l-4 border-fuchsia-500 shadow-[0_0_30px_rgba(217,70,239,0.1)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-fuchsia-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-x-1/3 -translate-y-1/3"></div>
+                <div class="relative z-10">
+                    <h4 class="text-2xl font-bold text-white mb-3 flex items-center gap-3">
+                        <span class="text-3xl">&#129504;</span> BCI & Neurotransmitter Architecture
+                    </h4>
+                    <p class="text-slate-300 text-base leading-relaxed mb-6">
+                        The DOPAMINE API is explicitly modeled after the closed-loop neural decoding and Brain-Computer Interface (BCI) research pioneered by <strong>Dr. José del R. Millán</strong> and <strong>Dr. Samantha Santacruz</strong> at UT Austin. By treating network requests not as standard HTTP calls, but as state-dependent digital "neurotransmitters," the VIOLINS system achieves true closed-loop BCI capabilities.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-900/80 backdrop-blur-sm p-5 rounded-xl border border-slate-700 hover:border-fuchsia-500/50 transition-colors">
+                            <strong class="text-fuchsia-400 block mb-2 text-lg">Millán Kinematics (Intent Routing)</strong>
+                            <span class="text-slate-400 text-sm leading-relaxed block">Adapts Dr. Millán's non-invasive EEG intent-decoding directly into the <strong>SLIP</strong> router. As the BCI decodes motor intent, SLIP clears NPU pathways for zero-latency robotic actuation before the user physically moves.</span>
+                        </div>
+                        <div class="bg-slate-900/80 backdrop-blur-sm p-5 rounded-xl border border-slate-700 hover:border-fuchsia-500/50 transition-colors">
+                            <strong class="text-fuchsia-400 block mb-2 text-lg">Santacruz Closed-Loop Therapies</strong>
+                            <span class="text-slate-400 text-sm leading-relaxed block">Integrates Dr. Santacruz's state-dependent neural tracking into <strong>JOSIAH</strong>. The system continuously monitors patient stress biomarkers, autonomously altering the hardware's "Dopamine" power state to deliver perfectly timed feedback.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dual-use" class="py-20 px-6 bg-slate-800/30 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Dual-Use Performances</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">A world-class orchestra can play a surgical Requiem or a fast-paced gaming Overture. Select a performance below to see how the VIOLINS architecture adapts.</p>
+            </div>
+
+            <div class="flex justify-center gap-4 mb-10">
+                <button id="btnMed" class="tab-btn active-med px-8 py-3 rounded-full text-sm font-bold border-2 border-slate-600 text-slate-300 focus:outline-none shadow-lg">Medical Surgineering</button>
+                <button id="btnNpc" class="tab-btn px-8 py-3 rounded-full text-sm font-bold border-2 border-slate-600 text-slate-300 focus:outline-none shadow-lg">Pancake Stack NPCs (Gaming)</button>
+            </div>
+
+            <div id="contentMed" class="transition-opacity duration-300">
+                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-rose-500/30 shadow-[0_0_40px_rgba(244,63,94,0.1)]">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="text-4xl bg-rose-500/20 text-rose-500 p-3 rounded-lg">&#10010;</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Autonomous Surgical Override</h3>
+                            <p class="text-rose-400 text-sm font-mono-custom mt-1">Tempo: Zero-Latency Patient Safety</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <strong class="text-cyan-400 block mb-2 text-lg">MEOW (Vision)</strong>
+                            <span class="text-slate-400 leading-relaxed">Processes multimodal bio-sensors (MRI overlays, thermal) to detect micro-tremors in neural tissue.</span>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <strong class="text-emerald-400 block mb-2 text-lg">JOSIAH (Memory)</strong>
+                            <span class="text-slate-400 leading-relaxed">Cross-references the anomaly against preoperative scans to confirm high-probability damage vectors.</span>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-xl border border-rose-500/50 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                            <strong class="text-rose-400 block mb-2 text-lg">SLIP (Router)</strong>
+                            <span class="text-slate-300 leading-relaxed">Autonomously generates a "halt" command, overriding the human surgeon's input to arrest the robotic arm in &lt;1ms.</span>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <strong class="text-violet-400 block mb-2 text-lg">POEM (Output)</strong>
+                            <span class="text-slate-400 leading-relaxed">Translates the sudden halt into variable haptic feedback (vibration) on the remote surgeon's console.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contentNpc" class="hidden transition-opacity duration-300">
+                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-violet-500/30 shadow-[0_0_40px_rgba(139,92,246,0.1)]">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="text-4xl bg-violet-500/20 text-violet-500 p-3 rounded-lg">&#127918;</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Massive Persistent Simulations</h3>
+                            <p class="text-violet-400 text-sm font-mono-custom mt-1">Tempo: Hyper-realistic "Pancake Stack" NPCs</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <strong class="text-cyan-400 block mb-2 text-lg">MEOW (Senses)</strong>
+                            <span class="text-slate-400 leading-relaxed">Observes player spatial location, avatar gestures, and processes voice-chat audio to detect tone and mood.</span>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-xl border border-violet-500/50 shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+                            <strong class="text-emerald-400 block mb-2 text-lg">JOSIAH (Memory)</strong>
+                            <span class="text-slate-300 leading-relaxed">The core gaming feature. Persistently remembers if a player tipped well or burned a pancake, building long-term digital relationships.</span>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <strong class="text-rose-400 block mb-2 text-lg">SLIP (Router)</strong>
+                            <span class="text-slate-400 leading-relaxed">Manages server load. Puts Level 50 NPCs into deep-sleep compute states if players are currently occupying Level 1.</span>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <strong class="text-violet-400 block mb-2 text-lg">POEM (Output)</strong>
+                            <span class="text-slate-400 leading-relaxed">Generates real-time, non-scripted, context-aware dialogue that sounds human and rhythmically natural.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap" class="py-20 px-6 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Strategic Roadmap to Enterprise</h2>
+            <p class="text-slate-400 text-center max-w-3xl mx-auto mb-12">Building a deep-tech surgical and AI platform requires immense capital. This 4-phase execution plan mitigates risk by bootstrapping resources and actively integrating theoretical routing frameworks with proven university hardware.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Phase 1: Trojan Horse -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-bl-lg text-xs font-bold uppercase">The Trojan Horse</div>
+                    <h3 class="text-2xl font-bold mb-2">Phase 1: STEM MVP</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">To bootstrap initial R&D without diluting equity, the foundational VIOLINS logic is packaged as an employer-funded curriculum. Using LEGO SPIKE Prime, the architecture's core logic—master/slave tele-ops and automated sensor overrides (SLIP)—is secretly prototyped while generating non-dilutive, upfront cash.</p>
+                    <div class="bg-slate-900 p-4 rounded-xl border-l-4 border-yellow-500">
+                        <span class="text-xs text-yellow-400 font-mono-custom block">Hardware: 2x SPIKE Hubs, Color Sensor</span>
+                        <span class="text-xs text-slate-500 mt-1 block">Goal: Prove Bluetooth Override Logic & Bootstrap</span>
+                    </div>
+                </div>
+
+                <!-- Phase 2: ARTS Lab & HERO Lab Integration -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 relative overflow-hidden border-l-4 border-l-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+                    <div class="absolute top-0 right-0 bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-bl-lg text-xs font-bold uppercase">Active: UT Austin R&D Ecosystem</div>
+                    <h3 class="text-2xl font-bold mb-2">Phase 2: ARTS & HERO Lab Pipeline</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">Leveraging my active research role in the ARTS Lab with Mobina Tavangarifard, I am bridging the VIOLINS architecture with OFDR shape-sensing and continuum manipulators. Simultaneously, through targeted mentorship with Johnathan Madera at the HERO Lab, I am actively acquiring the machine learning optimization foundations required to harden the DOPAMINE routing algorithms for eventual closed-loop neural decoding (Santacruz/Millán BCI labs).</p>
+                    <div class="bg-slate-900 p-4 rounded-xl border-l-4 border-cyan-500">
+                        <span class="text-xs text-cyan-400 font-mono-custom block">Environment: ARTS Lab + HERO Lab Mentorship</span>
+                        <span class="text-xs text-slate-500 mt-1 block">Goal: Mechanical Integration & ML Algorithm Optimization</span>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Strategic Integration -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-violet-500/20 text-violet-400 px-3 py-1 rounded-bl-lg text-xs font-bold uppercase">Industry Intel</div>
+                    <h3 class="text-2xl font-bold mb-2">Phase 3: Strategic Internship</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">Secure a tactical role at an industry titan (Intuitive Surgical, Stryker, or Raytheon). Gather insider intelligence on FDA pathways, defense-grade networking, and robotic kinematics while preserving the VIOLINS IP via a strict "prior invention" employment clause.</p>
+                    <div class="bg-slate-900 p-4 rounded-xl border-l-4 border-violet-500">
+                        <span class="text-xs text-violet-400 font-mono-custom block">Environment: Fortune 500 Med/Def Tech</span>
+                        <span class="text-xs text-slate-500 mt-1 block">Goal: Network Accumulation & FDA Insight</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-rose-500/20 text-rose-400 px-3 py-1 rounded-bl-lg text-xs font-bold uppercase">Venture Backed</div>
+                    <h3 class="text-2xl font-bold mb-2">Phase 4: Enterprise ASIC</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">Armed with university data and insider industry experience, raise venture capital. Translate the proven routing logic into custom, hard-coded silicon (ASIC). This hardware transition is required to meet the FDA thermal limits of operating rooms and scale to mass production.</p>
+                    <div class="bg-slate-900 p-4 rounded-xl border-l-4 border-rose-500">
+                        <span class="text-xs text-rose-400 font-mono-custom block">Capital: $25M+ Series A Target</span>
+                        <span class="text-xs text-slate-500 mt-1 block">Hardware: Tape-out Custom GAS PEDAL Chip</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl">
+                <h4 class="text-center font-bold mb-6 text-xl">The Hardware Evolution (Logarithmic Scale)</h4>
+                <div class="chart-container" style="max-width: 900px; height: 350px;">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-slate-500 mt-4">Visualizing the 1000x leap from the Phase 1 STEM Prototype to the Phase 4 Enterprise Silicon.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sow" class="py-20 px-6 bg-slate-800/30 border-b border-slate-800">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center text-indigo-400">Initial Capitalization: The Turnkey SOW</h2>
+            <p class="text-slate-400 text-center mb-10">To execute Phase 1 without diluting equity, the VIOLINS logic is packaged into a premium STEM curriculum for Eth Miracle Myth. This Statement of Work secures immediate, non-dilutive cash flow by separating the founder's IP licensing fee from the employer's hardware CapEx.</p>
+            
+            <div class="bg-slate-900 rounded-xl p-8 border border-slate-700 shadow-2xl relative">
+                <div class="border-b border-slate-700 pb-6 mb-6">
+                    <h3 class="text-2xl font-extrabold text-white tracking-wide uppercase">Statement of Work (SOW)</h3>
+                    <p class="text-indigo-400 font-mono-custom mt-1 text-sm">Project: Eth Miracle Myth - "Rescue Claw" Integration</p>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700">
+                            <h4 class="text-indigo-400 font-bold mb-2 text-sm uppercase">Phase A: Technical Setup</h4>
+                            <ul class="text-sm text-slate-300 space-y-2 list-disc pl-4">
+                                <li>Procurement of 12x SPIKE Prime Kits.</li>
+                                <li>Firmware flashing & hardware inventory.</li>
+                                <li>Bluetooth MAC address pre-pairing.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700">
+                            <h4 class="text-indigo-400 font-bold mb-2 text-sm uppercase">Phase B: IP Licensing</h4>
+                            <ul class="text-sm text-slate-300 space-y-2 list-disc pl-4">
+                                <li>4-week educational curriculum delivery.</li>
+                                <li>Master/Slave Python routing scripts.</li>
+                                <li>Instructor troubleshooting manuals.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold mb-3 border-b border-slate-700 pb-1">Financial Investment Structure</h4>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm text-slate-400 mb-2"><strong>1. Client CapEx (Hardware):</strong> ~$6,300.00</p>
+                            <p class="text-xs text-slate-500 italic pl-4">Cost of LEGO SPIKE kits and tablets. Paid directly to vendors by Eth Miracle Myth. Assets remain permanent property of the client.</p>
+                        </div>
+                        
+                        <div class="bg-indigo-900/30 border border-indigo-500/50 p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-indigo-300 block">2. Founder's Setup & License Fee:</span>
+                                <span class="text-xs text-slate-400">Total non-dilutive cash infusion for Phase 1 MVP</span>
+                            </div>
+                            <span class="text-xl font-extrabold font-mono-custom text-white">$3,000.00</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-white font-bold mb-2 text-sm">Payment Milestones</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between bg-slate-800 p-2 rounded">
+                                    <span class="text-slate-400">Due on Signing:</span>
+                                    <span class="text-white font-mono-custom">$1,500.00</span>
+                                </div>
+                                <div class="flex justify-between bg-slate-800 p-2 rounded">
+                                    <span class="text-slate-400">Final Delivery:</span>
+                                    <span class="text-white font-mono-custom">$1,500.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-2 text-sm">IP Protection Clause</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed bg-slate-800 p-3 rounded">
+                                "The underlying tele-robotic architecture, routing protocols, and proprietary structural concepts (the VIOLINS Architecture) are preexisting intellectual property belonging solely to the creator. This SOW grants an educational license; it does not constitute a transfer of ownership of the core technology."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ip-strategy" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center text-amber-400">Intellectual Property Moat</h2>
+            
+            <div class="bg-[#f8fafc] text-slate-900 rounded-lg p-8 md:p-12 shadow-2xl relative border-t-8 border-amber-500">
+                <div class="border-b-2 border-slate-300 pb-6 mb-8 mt-2">
+                    <h3 class="text-2xl font-extrabold uppercase tracking-widest text-slate-800">Attorney Memo & Invention Disclosure</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-sm font-bold text-slate-600">
+                        <div>To: Prospective Patent Counsel</div>
+                        <div>Date: April 6, 2026</div>
+                        <div>From: Founder, Project VIOLINS</div>
+                        <div>Subject: Patent Filing & FTO Strategy</div>
+                    </div>
+                </div>
+
+                <div class="space-y-8 font-serif">
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-5 text-amber-900 text-sm leading-relaxed">
+                        <strong>PREFACE:</strong> I require comprehensive legal assistance. I have developed a revolutionary medical AI/hardware architecture (VinciInterfacingOptimusLeoIronNationalStar) designed to compete directly with legacy systems. I have the technical blueprint for the hardware, the software, and the predictive surgical logic, but I need legal expertise to refine these claims, conduct a Freedom to Operate (FTO) search against competitor IP moats, and formally file the patents.
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg uppercase border-b border-slate-300 pb-1 mb-3 text-slate-800">Core Inventions to Protect</h4>
+                        <p class="text-sm mb-3">This patent must protect the synergistic interaction between edge-compute hardware and predictive software:</p>
+                        <ul class="list-disc pl-6 text-sm space-y-2 text-slate-700">
+                            <li><strong>GAS PEDAL:</strong> NPU using a "Sparsity Engine" to drop zero-value calculations to maintain thermal limits.</li>
+                            <li><strong>Vector-Stream:</strong> API protocol eliminating TCP/IP handshakes for low-latency transmission.</li>
+                            <li><strong>SLIP:</strong> Critical bio-router that automatically halts robotic movement based on AI prediction.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg uppercase border-b border-slate-300 pb-1 mb-4 text-slate-800">Mock Independent Claim 1 (System)</h4>
+                        <div class="pl-4 border-l-2 border-slate-400 text-[14px] leading-relaxed italic space-y-4 text-slate-700">
+                            <p>1. A zero-latency, thermally constrained surgical computing system for predictive mechanical override and biometric processing, comprising:</p>
+                            <p>a localized Neural Processing Unit (NPU) comprising a sparsity engine configured to physically bypass non-essential zero-value neural weight calculations, thereby reducing active thermal generation;</p>
+                            <p>a multimodal sensory ingestion module configured to simultaneously process real-time optical data and bio-signals to identify localized surgical anomalies;</p>
+                            <p>a synchronized layer routing protocol communicatively coupled to the NPU and a robotic manipulator, wherein upon detecting an anomaly, said protocol dynamically reallocates NPU compute to generate a "halt" command, autonomously overriding a human operator to physically arrest the robotic manipulator in under one millisecond.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg uppercase border-b border-slate-300 pb-1 mb-3 text-slate-800">Requested Next Steps</h4>
+                        <ol class="list-decimal pl-6 text-sm space-y-3 text-slate-700 font-sans font-medium">
+                            <li>Advise if claims must be split into Hardware (NPU) and Software (Method) to bypass <em>Alice</em> Section 101 rejections.</li>
+                            <li>Initiate FTO Search targeting competitor portfolios regarding tele-operative AI overrides.</li>
+                            <li>Prepare Provisional Patent Application (PPA) to establish priority date based on the summer Pi/Arduino prototyping rig.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 py-8 border-t border-slate-800 text-center text-slate-500 text-sm font-mono-custom mt-12">
+        &copy; 2026 VIOLINS Architecture. All Rights Reserved. Confidential IP.
+    </footer>
+
+    <script>
+        // --- AUDIO / MODAL LOGIC ---
+        const modal = document.getElementById('entry-modal');
+        const enterBtn = document.getElementById('enter-btn');
+        const audio = document.getElementById('symphony-audio');
+        const audioToggle = document.getElementById('audio-toggle');
+        let isPlaying = false;
+
+        enterBtn.addEventListener('click', () => {
+            // Fade out modal and enable scrolling
+            modal.style.opacity = '0';
+            document.body.classList.remove('no-scroll');
+            setTimeout(() => { modal.style.display = 'none'; }, 700);
+            
+            // Play Audio
+            audio.volume = 0.5; // Start at 50% volume
+            audio.play().then(() => {
+                isPlaying = true;
+                audioToggle.classList.remove('hidden');
+                audioToggle.innerHTML = '&#128266;'; // Speaker with sound icon
+            }).catch(e => {
+                console.log("Audio play failed. Browser may still be blocking autoplay.", e);
+                // Show toggle anyway so user can try clicking it
+                audioToggle.classList.remove('hidden');
+                audioToggle.innerHTML = '&#128263;'; // Muted icon
+            });
+        });
+
+        audioToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                audioToggle.innerHTML = '&#128263;'; // Muted icon
+            } else {
+                audio.play();
+                audioToggle.innerHTML = '&#128266;'; // Speaker with sound icon
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // --- CHART JS LOGIC ---
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = 'Inter';
+
+        function prepareLabels(label) {
+            if (label.length <= 16) return label;
+            let words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (let i = 0; i < words.length; i++) {
+                if ((currentLine + words[i]).length > 16) {
+                    if (currentLine.length > 0) { lines.push(currentLine.trim()); currentLine = words[i] + ' '; } 
+                    else { lines.push(words[i]); currentLine = ''; }
+                } else { currentLine += words[i] + ' '; }
+            }
+            if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const energyCtx = document.getElementById('energyChart').getContext('2d');
+        new Chart(energyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Essential Bio-Calculations", "Skipped Operations (Thermal Cooling)"].map(prepareLabels),
+                datasets: [{
+                    data: [30, 70],
+                    backgroundColor: ['#f43f5e', '#10b981'], 
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '75%',
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                let label = items[0].chart.data.labels[items[0].dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const polarCtx = document.getElementById('apiPolarChart').getContext('2d');
+        new Chart(polarCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ["POEM (Translation)", "SLIP (Routing)", "MEOW (Senses)", "JOSIAH (Memory)"].map(prepareLabels),
+                datasets: [{
+                    data: [85, 95, 90, 80], 
+                    backgroundColor: [
+                        'rgba(168, 85, 247, 0.6)', 
+                        'rgba(244, 63, 94, 0.6)',  
+                        'rgba(6, 182, 212, 0.6)',  
+                        'rgba(16, 185, 129, 0.6)'  
+                    ],
+                    borderColor: '#0f172a',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { r: { ticks: { display: false }, grid: { color: 'rgba(51, 65, 85, 0.5)' } } },
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                let label = items[0].chart.data.labels[items[0].dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Performance Chart for 3 Stages (SPIKE -> RPi -> ASIC)
+        const perfCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(perfCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Throughput (TOPS)', 'Efficiency (TOPS/Watt)', 'Latency (ms)'].map(prepareLabels),
+                datasets: [
+                    {
+                        label: 'Phase 1: SPIKE STEM MVP',
+                        data: [0.1, 0.5, 150], 
+                        backgroundColor: '#eab308', 
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Phase 2: RPi/Arduino / da Vinci',
+                        data: [12, 4, 15], 
+                        backgroundColor: '#06b6d4', 
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Phase 4: Custom Enterprise ASIC',
+                        data: [1200, 60, 0.5], 
+                        backgroundColor: '#f43f5e', 
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        type: 'logarithmic',
+                        grid: { color: 'rgba(51, 65, 85, 0.3)' },
+                        ticks: {
+                            callback: function(val) {
+                                if (val === 0.1 || val === 1 || val === 10 || val === 100 || val === 1000) return val;
+                                return null;
+                            }
+                        }
+                    },
+                    x: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                let label = items[0].chart.data.labels[items[0].dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            },
+                            label: function(ctx) {
+                                let val = ctx.raw;
+                                if (ctx.dataIndex === 0) return `${ctx.dataset.label}: ${val} TOPS`;
+                                if (ctx.dataIndex === 1) return `${ctx.dataset.label}: ${val} TOPS/W`;
+                                return `${ctx.dataset.label}: ${val} ms`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- TAB LOGIC ---
+        const btnMed = document.getElementById('btnMed');
+        const btnNpc = document.getElementById('btnNpc');
+        const contentMed = document.getElementById('contentMed');
+        const contentNpc = document.getElementById('contentNpc');
+
+        btnMed.addEventListener('click', () => {
+            btnMed.classList.add('active-med');
+            btnMed.classList.remove('border-slate-600', 'text-slate-300');
+            btnNpc.classList.remove('active-npc');
+            btnNpc.classList.add('border-slate-600', 'text-slate-300');
+            
+            contentNpc.classList.add('hidden');
+            contentMed.classList.remove('hidden');
+        });
+
+        btnNpc.addEventListener('click', () => {
+            btnNpc.classList.add('active-npc');
+            btnNpc.classList.remove('border-slate-600', 'text-slate-300');
+            btnMed.classList.remove('active-med');
+            btnMed.classList.add('border-slate-600', 'text-slate-300');
+            
+            contentMed.classList.add('hidden');
+            contentNpc.classList.remove('hidden');
+        });
+
+    </script>
+</body>
+</html>
